@@ -216,7 +216,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
             "FEAR",
             "FEARFUL",
             "HAPPY",
-            "NEUTRAL",
+            "FEAR",
             "HAPPY",
             "NEUTRAL",
         ]
@@ -226,7 +226,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
             "FEAR",
             "FEARFUL",
             "HAPPY",
-            "NEUTRAL",
+            "FEAR",
             "HAPPY",
             "NEUTRAL",
         ]
