@@ -7,6 +7,8 @@ import librosa
 import librosa.display
 import matplotlib.pyplot as plt
 from PIL import Image
+import shutil
+import subprocess
 
 import os
 # Create ~/.kaggle if it doesn't exist
@@ -14,9 +16,16 @@ os.makedirs(os.path.expanduser("~/.kaggle"), exist_ok=True)
 
 # Copy kaggle.json only if it is not already present
 if not os.path.exists(os.path.expanduser("~/.kaggle/kaggle.json")):
-    !cp kaggle.json ~/.kaggle/
-    !chmod 600 ~/.kaggle/kaggle.json
-    !kaggle kernels output yp271289/own-data-model-save
+    shutil.copy("kaggle.json", os.path.expanduser("~/.kaggle/kaggle.json"))
+    os.chmod(os.path.expanduser("~/.kaggle/kaggle.json"), 0o600)
+    subprocess.run(
+    [
+        "kaggle",
+        "kernels",
+        "output",
+        "yp271289/own-data-model-save"
+    ],
+    check=True
 else:
     print("Dataset already exists.")
 
