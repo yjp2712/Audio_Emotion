@@ -8,41 +8,35 @@ import librosa.display
 import matplotlib.pyplot as plt
 from PIL import Image
 import os
-import shutil
-import subprocess
-
-KAGGLE_DIR = os.path.expanduser("~/.kaggle")
-KAGGLE_JSON = os.path.join(KAGGLE_DIR, "kaggle.json")
-MODEL_DIR = "English_Saved_Model"   # Change this check as needed
+import json
+import streamlit as st
 
 # Create ~/.kaggle
-os.makedirs(KAGGLE_DIR, exist_ok=True)
+kaggle_dir = os.path.expanduser("~/.kaggle")
+os.makedirs(kaggle_dir, exist_ok=True)
 
-# Download only if model folder doesn't exist
-if not os.path.exists(MODEL_DIR):
+# Create kaggle.json from Streamlit secrets
+kaggle_json = {
+    "username": st.secrets["KAGGLE_USERNAME"],
+    "key": st.secrets["KAGGLE_KEY"]
+}
 
-    if not os.path.exists("kaggle.json"):
-        raise FileNotFoundError(
-            "kaggle.json not found in the project directory."
-        )
+with open(os.path.join(kaggle_dir, "kaggle.json"), "w") as f:
+    json.dump(kaggle_json, f)
 
-    shutil.copy("kaggle.json", KAGGLE_JSON)
-    os.chmod(KAGGLE_JSON, 0o600)
+os.chmod(os.path.join(kaggle_dir, "kaggle.json"), 0o600)
 
-    subprocess.run(
-        [
-            "kaggle",
-            "kernels",
-            "output",
-            "yp271289/own-data-model-save"
-        ],
-        check=True
-    )
+# Download kernel output (only if not already downloaded)
+if not os.path.exists("English_Saved_Model"):
+    status = os.system("kaggle kernels output yp271289/own-data-model-save")
 
-    print("Model downloaded successfully.")
+    if status != 0:
+        st.error("Failed to download model from Kaggle.")
+        st.stop()
 
+    st.success("Model downloaded successfully.")
 else:
-    print("Model already exists.")
+    st.success("Model already exists.")
 
 # ============================================================
 # Streamlit Configuration
