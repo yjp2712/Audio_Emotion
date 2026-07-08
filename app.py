@@ -213,7 +213,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
     if language == "English":
         classes = [
             "ANGRY",
-            "FEAR",
+            "NEUTRAL",
             "FEARFUL",
             "FEARFUL",
             "FEAR",
@@ -223,7 +223,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
     else:  # Gujarati
         classes = [
             "ANGRY",
-            "FEAR",
+            "NEUTRAL",
             "FEARFUL",
             "FEARFUL",
             "FEAR",
