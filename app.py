@@ -16,8 +16,8 @@ import json
 import streamlit as st
 
 # Read credentials from Streamlit Secrets
-username = st.secrets["KAGGLE_USERNAME"]
-api_key = st.secrets["KAGGLE_KEY"]
+username = st.secrets["yp271289"]
+api_key = st.secrets["ffe074510c04ca2a400d94765a2e18f2"]
 
 # Create ~/.kaggle
 kaggle_dir = os.path.expanduser("~/.kaggle")
@@ -27,8 +27,8 @@ os.makedirs(kaggle_dir, exist_ok=True)
 with open(os.path.join(kaggle_dir, "kaggle.json"), "w") as f:
     json.dump(
         {
-            "username": yp271289,
-            "key": ffe074510c04ca2a400d94765a2e18f2
+            "username": username,
+            "key": api_key
         },
         f
     )
