@@ -63,9 +63,10 @@ TARGET_SIZE = (224, 224)
 # Custom Layers
 # ============================================================
 
+@tf.keras.utils.register_keras_serializable()
 class PatchExtractor(tf.keras.layers.Layer):
-    def __init__(self, patch_size):
-        super().__init__()
+    def __init__(self, patch_size, **kwargs):
+        super().__init__(**kwargs)
         self.patch_size = patch_size
 
     def call(self, images):
@@ -80,33 +81,54 @@ class PatchExtractor(tf.keras.layers.Layer):
         )
 
         patch_dims = tf.shape(patches)[-1]
-        patches = tf.reshape(patches, [batch_size, -1, patch_dims])
 
-        return patches
+        return tf.reshape(
+            patches,
+            [batch_size, -1, patch_dims]
+        )
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "patch_size": self.patch_size
+        })
+        return config
 
 
+@tf.keras.utils.register_keras_serializable()
 class PatchEncoder(tf.keras.layers.Layer):
-    def __init__(self, num_patches, projection_dim):
-        super().__init__()
 
-        self.projection = tf.keras.layers.Dense(projection_dim)
+    def __init__(self,
+                 num_patches,
+                 projection_dim,
+                 **kwargs):
+
+        super().__init__(**kwargs)
+
         self.num_patches = num_patches
         self.projection_dim = projection_dim
+
+        self.projection = tf.keras.layers.Dense(projection_dim)
+        self.position_embedding = None
 
     def build(self, input_shape):
         self.position_embedding = tf.keras.layers.Embedding(
             input_dim=self.num_patches,
-            output_dim=self.projection_dim
+            output_dim=self.projection_dim,
         )
 
     def call(self, patches):
-        positions = tf.range(
-            start=0,
-            limit=self.num_patches,
-            delta=1
-        )
+        positions = tf.range(0, self.num_patches)
 
         return self.projection(patches) + self.position_embedding(positions)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "num_patches": self.num_patches,
+            "projection_dim": self.projection_dim,
+        })
+        return config
 
 
 # ============================================================
@@ -119,11 +141,8 @@ def load_model(language):
     folder = f"{language}_Saved_Model"
 
     model = tf.keras.models.load_model(
-        os.path.join(folder, "Hybrid_VGG16_ViT.keras"),
-        custom_objects={
-            "PatchExtractor": PatchExtractor,
-            "PatchEncoder": PatchEncoder
-        }
+    model_path,
+    custom_objects={"PatchExtractor": PatchExtractor,"PatchEncoder": PatchEncoder,},compile=False,
     )
 
     with open(os.path.join(folder, "label_encoder.pkl"), "rb") as f:
