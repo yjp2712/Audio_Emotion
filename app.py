@@ -140,9 +140,15 @@ def load_model(language):
 
     folder = f"{language}_Saved_Model"
 
+    model_file = os.path.join(folder, "Hybrid_VGG16_ViT.keras")
+
     model = tf.keras.models.load_model(
-    model_path,
-    custom_objects={"PatchExtractor": PatchExtractor,"PatchEncoder": PatchEncoder,},compile=False,
+        model_file,
+        custom_objects={
+            "PatchExtractor": PatchExtractor,
+            "PatchEncoder": PatchEncoder,
+        },
+        compile=False,
     )
 
     with open(os.path.join(folder, "label_encoder.pkl"), "rb") as f:
