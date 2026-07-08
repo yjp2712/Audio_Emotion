@@ -164,35 +164,29 @@ def load_model(language):
 def create_spectrogram(y, sr):
 
     X = librosa.stft(y)
-    Xdb = librosa.amplitude_to_db(np.abs(X))
+    Xdb = librosa.amplitude_to_db(np.abs(X), ref=np.max)
 
-    fig = plt.figure(figsize=(4, 4), dpi=64)
+    fig, ax = plt.subplots(figsize=(4, 4), dpi=64)
 
-    plt.axis("off")
+    ax.axis("off")
 
     librosa.display.specshow(
         Xdb,
         sr=sr,
         x_axis=None,
         y_axis=None,
-        cmap="magma"
+        cmap="magma",
+        ax=ax,
     )
 
     fig.canvas.draw()
 
-    img = np.frombuffer(
-        fig.canvas.tostring_rgb(),
-        dtype=np.uint8
-    )
-
-    img = img.reshape(
-        fig.canvas.get_width_height()[::-1] + (3,)
-    )
+    img = np.asarray(fig.canvas.buffer_rgba())
+    img = img[:, :, :3]  # Remove alpha channel
 
     plt.close(fig)
 
     img = Image.fromarray(img)
-
     img = img.resize(TARGET_SIZE)
 
     return np.array(img)
