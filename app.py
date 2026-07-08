@@ -271,7 +271,7 @@ if uploaded_file is not None:
 
     st.image(
         spectrogram,
-        use_container_width=True
+        width=300
     )
 
     uploaded_file.seek(0)
