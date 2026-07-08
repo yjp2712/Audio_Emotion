@@ -16,6 +16,7 @@ os.makedirs(os.path.expanduser("~/.kaggle"), exist_ok=True)
 
 # Copy kaggle.json only if it is not already present
 if not os.path.exists(os.path.expanduser("~/.kaggle/kaggle.json")):
+    os.makedirs(os.path.expanduser("~/.kaggle"), exist_ok=True)
     shutil.copy("kaggle.json", os.path.expanduser("~/.kaggle/kaggle.json"))
     os.chmod(os.path.expanduser("~/.kaggle/kaggle.json"), 0o600)
     os.system("kaggle kernels output yp271289/own-data-model-save")
