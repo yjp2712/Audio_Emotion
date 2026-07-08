@@ -218,7 +218,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
             "HAPPY",
             "NEUTRAL",
             "HAPPY",
-            "SURPRISE",
+            "NEUTRAL",
         ]
     else:  # Gujarati
         classes = [
@@ -228,7 +228,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
             "HAPPY",
             "NEUTRAL",
             "HAPPY",
-            "SURPRISE",
+            "NEUTRAL",
         ]
 
     emotion = classes[idx]
