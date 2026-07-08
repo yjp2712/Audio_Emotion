@@ -17,8 +17,8 @@ os.makedirs(kaggle_dir, exist_ok=True)
 
 # Create kaggle.json from Streamlit secrets
 kaggle_json = {
-    "username": st.secrets["KAGGLE_USERNAME"],
-    "key": st.secrets["KAGGLE_KEY"]
+    "username": st.secrets["yp271289"],
+    "key": st.secrets["ffe074510c04ca2a400d94765a2e18f2"]
 }
 
 with open(os.path.join(kaggle_dir, "kaggle.json"), "w") as f:
