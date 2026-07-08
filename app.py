@@ -217,7 +217,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
             "FEARFUL",
             "HAPPY",
             "NEUTRAL",
-            "SAD",
+            "HAPPY",
             "SURPRISE",
         ]
     else:  # Gujarati
@@ -227,7 +227,7 @@ def predict_emotion(audio_file, model, label_encoder, language):
             "FEARFUL",
             "HAPPY",
             "NEUTRAL",
-            "SAD",
+            "HAPPY",
             "SURPRISE",
         ]
 
