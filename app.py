@@ -18,14 +18,7 @@ os.makedirs(os.path.expanduser("~/.kaggle"), exist_ok=True)
 if not os.path.exists(os.path.expanduser("~/.kaggle/kaggle.json")):
     shutil.copy("kaggle.json", os.path.expanduser("~/.kaggle/kaggle.json"))
     os.chmod(os.path.expanduser("~/.kaggle/kaggle.json"), 0o600)
-    subprocess.run(
-    [
-        "kaggle",
-        "kernels",
-        "output",
-        "yp271289/own-data-model-save"
-    ],
-    check=True
+    os.system("kaggle kernels output yp271289/own-data-model-save")
 else:
     print("Dataset already exists.")
 
