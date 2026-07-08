@@ -196,7 +196,7 @@ def create_spectrogram(y, sr):
 # Prediction Function
 # ============================================================
 
-def predict_emotion(audio_file, model, label_encoder):
+def predict_emotion(audio_file, model, label_encoder, language):
 
     y, sr = librosa.load(audio_file, sr=22050)
 
@@ -209,11 +209,32 @@ def predict_emotion(audio_file, model, label_encoder):
 
     idx = np.argmax(prediction)
 
-    emotion = label_encoder.inverse_transform([idx])[0]
+    # Emotion labels
+    if language == "English":
+        classes = [
+            "ANGRY",
+            "FEAR",
+            "FEARFUL",
+            "HAPPY",
+            "NEUTRAL",
+            "SAD",
+            "SURPRISE",
+        ]
+    else:  # Gujarati
+        classes = [
+            "ANGRY",
+            "FEAR",
+            "FEARFUL",
+            "HAPPY",
+            "NEUTRAL",
+            "SAD",
+            "SURPRISE",
+        ]
 
+    emotion = classes[idx]
     confidence = prediction[idx]
 
-    return emotion, confidence, prediction, img
+    return emotion, confidence, prediction, classes
 
 
 # ============================================================
@@ -262,11 +283,11 @@ if uploaded_file is not None:
 
         with st.spinner("Recognizing emotion..."):
 
-            emotion, confidence, probabilities, _ = predict_emotion(
+            emotion, confidence, probabilities, classes = predict_emotion(
                 uploaded_file,
                 model,
-                label_encoder
-            )
+                label_encoder,
+                language)
 
         st.success(f"### Predicted Emotion : {emotion}")
 
@@ -277,7 +298,6 @@ if uploaded_file is not None:
 
         st.markdown("## 📈 Prediction Probabilities")
 
-        classes = label_encoder.classes_
 
         for cls, prob in zip(classes, probabilities):
 
