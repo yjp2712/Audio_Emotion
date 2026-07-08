@@ -1,0 +1,7 @@
+tensorflow
+librosa
+matplotlib
+Pillow
+scikit-learn
+soundfile
+h5py
